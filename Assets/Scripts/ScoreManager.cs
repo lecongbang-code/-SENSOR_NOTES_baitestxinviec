@@ -9,6 +9,8 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     static int score;
 
+    public AudioSource hitAudio;
+
     void Start()
     {
         Instance = this;
@@ -18,6 +20,7 @@ public class ScoreManager : MonoBehaviour
     public static void Hit()
     {
         score += 1;
+        Instance.hitAudio.Play();
     }
   
     private void Update()

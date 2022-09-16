@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public static Player Instance;
-
     public bool MoveInPC;
     public float playerSpeedMouse = 25f;
     public float playerSpeedTouch = 0.25f;
@@ -13,9 +11,11 @@ public class Player : MonoBehaviour
 
     [SerializeField] FixedTouchField touchField;
 
+    Rigidbody rb;
+
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -24,8 +24,9 @@ public class Player : MonoBehaviour
         else InputMove();
 
         float velocity = SongManager.velocity;
-        Vector3 movement = new Vector3(mouseX, 0, velocity);
-        transform.Translate(movement * Time.deltaTime);  
+        // Vector3 movement = new Vector3(mouseX, 0, velocity);
+        // transform.Translate(movement * Time.deltaTime);
+        rb.velocity = new Vector3(mouseX, rb.velocity.y, velocity);
     }
 
     void LateUpdate()

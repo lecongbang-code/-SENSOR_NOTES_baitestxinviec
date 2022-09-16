@@ -1,34 +1,39 @@
 using UnityEngine;
 using MidiParser;
-using System.Collections.Generic;
+using System.Collections;
 
 public class SongManager : MonoBehaviour
 {
     public static SongManager Instance;
-    public AudioSource audioSource;
-    public Lane[] lanes;
-    public string fileLocation = "Unity.mid";
-    public float songDelayInSeconds = 0.1f;
-
-    public float noteTime = 1; 
-
-    public static float velocity;
-
     public static MidiFile midiFile;
+
+    public Lane[] lanes;
+    public AudioSource audioSource;
+    public string fileLocation = "Unity.mid";
+    public float songDelayInSeconds = 0f;
+
+    public static float velocity = 0;
 
     void Start()
     {
         Instance = this;
+
         ReadFromFile();
+
+        // Invoke(nameof(StartSong), songDelayInSeconds);
+
+        StartCoroutine(DelayStartSong());
     }
 
-    private void ReadFromFile()
+    void ReadFromFile()
     {
         midiFile = new MidiFile(Application.streamingAssetsPath + "/" + fileLocation);
 
         var ticksPerQuarterNote = midiFile.TicksPerQuarterNote;
 
-        double timeRate = 500 / ticksPerQuarterNote;
+        // double timeRate = System.Math.Round(500f / (float)ticksPerQuarterNote, 4);
+
+        double timeRate = 500f / (float)ticksPerQuarterNote;
 
         foreach (var track in midiFile.Tracks)
         {
@@ -36,20 +41,14 @@ public class SongManager : MonoBehaviour
             {
                 if (midiEvent.MidiEventType == MidiEventType.NoteOn)
                 {
-                    double time = midiEvent.Time * timeRate;
-                    int note = midiEvent.Note;
-                    velocity = midiEvent.Velocity;
-                    SetTimeStamps(time, note);
+                    var note = midiEvent.Note;
+                    // double time = System.Math.Round(midiEvent.Time * timeRate / 1000, 4);
+                    double time = midiEvent.Time * timeRate / 1000f;
+                    foreach (var lane in lanes) lane.SetTimeStamps(time, note);
+                    velocity = midiEvent.Velocity / 2f;
                 }
             }
         }
-
-        Invoke(nameof(StartSong), songDelayInSeconds);
-    }
-
-    void SetTimeStamps(double timeStamps, int noteStamps)
-    {
-        foreach (var lane in lanes) lane.SetTimeStamps(timeStamps, noteStamps);
     }
 
     public void StartSong()
@@ -57,8 +56,9 @@ public class SongManager : MonoBehaviour
         audioSource.Play();
     }
 
-    public static double GetAudioSourceTime()
+    IEnumerator DelayStartSong()
     {
-        return (double)Instance.audioSource.timeSamples / Instance.audioSource.clip.frequency;
+        yield return new WaitForSeconds(songDelayInSeconds);
+        StartSong();
     }
 }
