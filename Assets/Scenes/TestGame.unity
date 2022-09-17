@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 486208356}
   - component: {fileID: 486208355}
   m_Layer: 0
-  m_Name: GameControl
+  m_Name: Game Control
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -385,7 +385,7 @@ GameObject:
   - component: {fileID: 603994331}
   - component: {fileID: 603994330}
   m_Layer: 0
-  m_Name: AudioSource
+  m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -592,7 +592,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 661142053}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 10000}
+  m_LocalPosition: {x: 0, y: 1, z: 4900}
   m_LocalScale: {x: 10, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1169,8 +1169,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1333485525}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5000}
-  m_LocalScale: {x: 1, y: 1, z: 1005}
+  m_LocalPosition: {x: 0, y: 0, z: 2450}
+  m_LocalScale: {x: 1, y: 1, z: 500}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1315,7 +1315,7 @@ GameObject:
   - component: {fileID: 1513331570}
   - component: {fileID: 1513331571}
   m_Layer: 0
-  m_Name: SongManager
+  m_Name: Song Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1357,7 +1357,7 @@ MonoBehaviour:
   - {fileID: 1771244145}
   audioSource: {fileID: 603994330}
   fileLocation: Unity.mid
-  songDelayInSeconds: 0.02
+  songDelayInSeconds: 0
 --- !u!1 &1570319346
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,7 +1416,7 @@ GameObject:
   - component: {fileID: 1588918344}
   - component: {fileID: 1588918343}
   m_Layer: 0
-  m_Name: ScoreManager
+  m_Name: Score Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1467,7 +1467,7 @@ GameObject:
   - component: {fileID: 1599159586}
   - component: {fileID: 1599159585}
   m_Layer: 0
-  m_Name: Player Capsule Body
+  m_Name: Player Capsule
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1550,7 +1550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c3666f175b15043a9e1bef88ecf6ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveInPC: 1
+  MoveInPC: 0
   playerSpeedMouse: 30
   playerSpeedTouch: 0.35
   touchField: {fileID: 2042949421}

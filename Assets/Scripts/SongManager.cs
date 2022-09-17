@@ -13,6 +13,7 @@ public class SongManager : MonoBehaviour
     public float songDelayInSeconds = 0f;
 
     public static float velocity = 0;
+    public static double timeRate = 0;
 
     void Start()
     {
@@ -31,9 +32,9 @@ public class SongManager : MonoBehaviour
 
         var ticksPerQuarterNote = midiFile.TicksPerQuarterNote;
 
-        // double timeRate = System.Math.Round(500f / (float)ticksPerQuarterNote, 4);
+        timeRate = System.Math.Round(500f / (float)ticksPerQuarterNote, 5);
 
-        double timeRate = 500f / (float)ticksPerQuarterNote;
+        // double timeRate = 500f / (float)ticksPerQuarterNote;
 
         foreach (var track in midiFile.Tracks)
         {
@@ -42,10 +43,10 @@ public class SongManager : MonoBehaviour
                 if (midiEvent.MidiEventType == MidiEventType.NoteOn)
                 {
                     var note = midiEvent.Note;
-                    // double time = System.Math.Round(midiEvent.Time * timeRate / 1000, 4);
-                    double time = midiEvent.Time * timeRate / 1000f;
+                    double time = System.Math.Round(midiEvent.Time * timeRate / 1000f, 5);
+                    // double time = midiEvent.Time * timeRate / 1000f;
                     foreach (var lane in lanes) lane.SetTimeStamps(time, note);
-                    velocity = midiEvent.Velocity / 2f;
+                    velocity = midiEvent.Velocity/2.0f;
                 }
             }
         }

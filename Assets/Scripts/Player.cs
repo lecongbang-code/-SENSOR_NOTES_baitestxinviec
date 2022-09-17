@@ -23,11 +23,16 @@ public class Player : MonoBehaviour
         if(!MoveInPC) TouchMove();
         else InputMove();
 
+        PlayerMove();
+    }
+
+    void PlayerMove()
+    {
         float velocity = SongManager.velocity;
         // Vector3 movement = new Vector3(mouseX, 0, velocity);
         // transform.Translate(movement * Time.deltaTime);
         rb.velocity = new Vector3(mouseX, rb.velocity.y, velocity);
-    }
+    }    
 
     void LateUpdate()
     {
