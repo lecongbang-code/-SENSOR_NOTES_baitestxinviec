@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
 
     void PlayerMove()
     {
-        velocity = SongManager.velocity;
+        velocity = SongManager.velocityPlayerMove;
         Vector3 movement = new Vector3(mouseX, 0, velocity);
         transform.Translate(movement * Time.deltaTime);
     }    

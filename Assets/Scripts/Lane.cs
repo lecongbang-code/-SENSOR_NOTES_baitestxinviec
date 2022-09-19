@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using System.Collections.Generic;
 
 public class Lane : MonoBehaviour
@@ -27,8 +26,7 @@ public class Lane : MonoBehaviour
     {
         if (spawnIndex < timeStamps.Count)
         {
-            var timeRate = Math.Pow(SongManager.timeRate, 2);
-            float laneZ = (float)timeStamps[spawnIndex] * SongManager.velocity - (float)timeRate;
+            float laneZ = (float)timeStamps[spawnIndex] * SongManager.velocityNote;
             GameObject g = Instantiate(notePrefab, new Vector3(transform.position.x, transform.position.y, laneZ), Quaternion.identity);
             g.transform.SetParent(transform);
             spawnIndex++;

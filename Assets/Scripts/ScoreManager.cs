@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using TMPro;
 
@@ -20,11 +19,13 @@ public class ScoreManager : MonoBehaviour
     public static void Hit()
     {
         score += 1;
+        Instance.scoreText.text = score.ToString();
         Instance.hitAudio.Play();
     }
-  
-    private void Update()
+
+    public static void TextSongDelayInSeconds(float timeDelayInSeconds)
     {
-        scoreText.text = score.ToString();
+        if (timeDelayInSeconds <= 0) timeDelayInSeconds = 0;
+        Instance.scoreText.text = Math.Round(timeDelayInSeconds, 2).ToString();
     }
 }

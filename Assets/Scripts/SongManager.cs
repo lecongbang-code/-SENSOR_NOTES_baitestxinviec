@@ -12,7 +12,9 @@ public class SongManager : MonoBehaviour
     public string fileLocation = "Unity.mid";
     public float songDelayInSeconds = 0f;
 
-    public static float velocity = 0;
+    public static float velocityPlayerMove = 0;
+    public static float velocityNote = 0;
+    float velocity = 0;
     public static double timeRate = 0;
 
     void Start()
@@ -20,6 +22,15 @@ public class SongManager : MonoBehaviour
         Instance = this;
         ReadFromFile();
         Invoke(nameof(StartSong), songDelayInSeconds);
+    }
+
+    void Update()
+    {
+        if(songDelayInSeconds > 0)
+        {
+            songDelayInSeconds -= Time.deltaTime;
+            ScoreManager.TextSongDelayInSeconds(songDelayInSeconds);
+        }    
     }
 
     void ReadFromFile()
@@ -40,6 +51,7 @@ public class SongManager : MonoBehaviour
                     double time = Math.Round(midiEvent.Time * timeRate / 1000f, 4);
                     foreach (var lane in lanes) lane.SetTimeStamps(time, note);
                     velocity = midiEvent.Velocity / 2.0f;
+                    velocityNote = velocity;
                 }
             }
         }
@@ -48,6 +60,7 @@ public class SongManager : MonoBehaviour
     void StartSong()
     {
         audioSource.Play();
+        velocityPlayerMove = velocity;
     }
 
     public void StopSong()
