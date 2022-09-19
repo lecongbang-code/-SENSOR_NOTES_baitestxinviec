@@ -1,6 +1,6 @@
 using UnityEngine;
+using System;
 using MidiParser;
-using System.Collections;
 
 public class SongManager : MonoBehaviour
 {
@@ -28,9 +28,7 @@ public class SongManager : MonoBehaviour
 
         var ticksPerQuarterNote = midiFile.TicksPerQuarterNote;
 
-        timeRate = System.Math.Round(500f / (float)ticksPerQuarterNote, 4);
-
-        // double timeRate = 500f / (float)ticksPerQuarterNote;
+        timeRate = Math.Round(500f / (float)ticksPerQuarterNote, 4);
 
         foreach (var track in midiFile.Tracks)
         {
@@ -39,8 +37,7 @@ public class SongManager : MonoBehaviour
                 if (midiEvent.MidiEventType == MidiEventType.NoteOn)
                 {
                     var note = midiEvent.Note;
-                    double time = System.Math.Round(midiEvent.Time * timeRate / 1000f, 4);
-                    // double time = midiEvent.Time * timeRate / 1000f;
+                    double time = Math.Round(midiEvent.Time * timeRate / 1000f, 4);
                     foreach (var lane in lanes) lane.SetTimeStamps(time, note);
                     velocity = midiEvent.Velocity / 2.0f;
                 }

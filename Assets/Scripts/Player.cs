@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -25,7 +23,6 @@ public class Player : MonoBehaviour
         velocity = SongManager.velocity;
         Vector3 movement = new Vector3(mouseX, 0, velocity);
         transform.Translate(movement * Time.deltaTime);
-        GameControl.PlayerPositon(transform.position);
     }    
 
     void LateUpdate()
@@ -65,7 +62,6 @@ public class Player : MonoBehaviour
         if (other.gameObject.tag == "Finish")
         {
             GameControl.FinishGame();
-            SongManager.Instance.StopSong();
         }
     }
 }
