@@ -4,34 +4,28 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public bool MoveInPC;
+    public bool MoveInPC = true;
     public float playerSpeedMouse = 25f;
     public float playerSpeedTouch = 0.25f;
-    float mouseX;
 
     [SerializeField] FixedTouchField touchField;
 
-    Rigidbody rb;
-
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+    float mouseX = 0f;
+    float velocity = 0f;
 
     void Update()
     {
         if(!MoveInPC) TouchMove();
         else InputMove();
-
-        PlayerMove();
+        if(!GameControl.finishGame) PlayerMove();
     }
 
     void PlayerMove()
     {
-        float velocity = SongManager.velocity;
-        // Vector3 movement = new Vector3(mouseX, 0, velocity);
-        // transform.Translate(movement * Time.deltaTime);
-        rb.velocity = new Vector3(mouseX, rb.velocity.y, velocity);
+        velocity = SongManager.velocity;
+        Vector3 movement = new Vector3(mouseX, 0, velocity);
+        transform.Translate(movement * Time.deltaTime);
+        GameControl.PlayerPositon(transform.position);
     }    
 
     void LateUpdate()
@@ -70,8 +64,8 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.tag == "Finish")
         {
-            Time.timeScale = 0;
-            SongManager.Instance.audioSource.Stop();
+            GameControl.FinishGame();
+            SongManager.Instance.StopSong();
         }
     }
 }

@@ -18,12 +18,8 @@ public class SongManager : MonoBehaviour
     void Start()
     {
         Instance = this;
-
         ReadFromFile();
-
-        // Invoke(nameof(StartSong), songDelayInSeconds);
-
-        StartCoroutine(DelayStartSong());
+        Invoke(nameof(StartSong), songDelayInSeconds);
     }
 
     void ReadFromFile()
@@ -32,7 +28,7 @@ public class SongManager : MonoBehaviour
 
         var ticksPerQuarterNote = midiFile.TicksPerQuarterNote;
 
-        timeRate = System.Math.Round(500f / (float)ticksPerQuarterNote, 5);
+        timeRate = System.Math.Round(500f / (float)ticksPerQuarterNote, 4);
 
         // double timeRate = 500f / (float)ticksPerQuarterNote;
 
@@ -43,23 +39,22 @@ public class SongManager : MonoBehaviour
                 if (midiEvent.MidiEventType == MidiEventType.NoteOn)
                 {
                     var note = midiEvent.Note;
-                    double time = System.Math.Round(midiEvent.Time * timeRate / 1000f, 5);
+                    double time = System.Math.Round(midiEvent.Time * timeRate / 1000f, 4);
                     // double time = midiEvent.Time * timeRate / 1000f;
                     foreach (var lane in lanes) lane.SetTimeStamps(time, note);
-                    velocity = midiEvent.Velocity/2.0f;
+                    velocity = midiEvent.Velocity / 2.0f;
                 }
             }
         }
     }
 
-    public void StartSong()
+    void StartSong()
     {
         audioSource.Play();
     }
 
-    IEnumerator DelayStartSong()
+    public void StopSong()
     {
-        yield return new WaitForSeconds(songDelayInSeconds);
-        StartSong();
+        audioSource.Stop();
     }
 }
