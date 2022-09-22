@@ -1,27 +1,55 @@
 using UnityEngine;
 using System;
 using MidiParser;
+using System.IO;
+using System.Collections;
+using UnityEngine.Networking;
 
 public class SongManager : MonoBehaviour
 {
     public static SongManager Instance;
-    public static MidiFile midiFile;
+    MidiFile midiFile;
 
     public Lane[] lanes;
     public AudioSource audioSource;
-    public string fileLocation = "Unity.mid";
+    public string fileName = "Unity.mid";
     public float songDelayInSeconds = 0f;
 
     public static float velocityPlayerMove = 0;
     public static float velocityNote = 0;
     float velocity = 0;
-    public static double timeRate = 0;
 
+    [Obsolete]
     void Start()
     {
         Instance = this;
-        ReadFromFile();
-        Invoke(nameof(StartSong), songDelayInSeconds);
+
+        if (Application.streamingAssetsPath.StartsWith("D:/") || Application.streamingAssetsPath.StartsWith("C:/"))
+            ReadFromFile();
+        else StartCoroutine(ReadFromWebsite());
+    }
+
+    [Obsolete]
+    private IEnumerator ReadFromWebsite()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get(Application.streamingAssetsPath + "/" + fileName))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log("Error: " + www.error);
+            }
+            else
+            {
+                byte[] results = www.downloadHandler.data;
+                using (var stream = new MemoryStream(results))
+                {
+                    midiFile = new MidiFile(stream);
+                    GetDataFromMidi();
+                }
+            }
+        }
     }
 
     void Update()
@@ -35,11 +63,16 @@ public class SongManager : MonoBehaviour
 
     void ReadFromFile()
     {
-        midiFile = new MidiFile(Application.streamingAssetsPath + "/" + fileLocation);
+        var path = Application.streamingAssetsPath + "/" + fileName;
+        midiFile = new MidiFile(path);
+        GetDataFromMidi();
+    }
 
+    public void GetDataFromMidi()
+    {
         var ticksPerQuarterNote = midiFile.TicksPerQuarterNote;
 
-        timeRate = Math.Round(500f / (float)ticksPerQuarterNote, 4);
+        var timeRate = Math.Round(500f / (float)ticksPerQuarterNote, 4);
 
         foreach (var track in midiFile.Tracks)
         {
@@ -50,11 +83,13 @@ public class SongManager : MonoBehaviour
                     var note = midiEvent.Note;
                     double time = Math.Round(midiEvent.Time * timeRate / 1000f, 4);
                     foreach (var lane in lanes) lane.SetTimeStamps(time, note);
-                    velocity = midiEvent.Velocity / 2.0f;
+                    velocity = midiEvent.Velocity / 3.0f;
                     velocityNote = velocity;
                 }
             }
         }
+
+        Invoke(nameof(StartSong), songDelayInSeconds);
     }
 
     void StartSong()

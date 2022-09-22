@@ -19,7 +19,7 @@ public class Note : MonoBehaviour
 
     void Hit()
     {
-        ScoreManager.Hit();
+        ScoreManager.Instance.Hit();
         Destroy(gameObject);
     }
 }

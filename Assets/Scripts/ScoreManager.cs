@@ -6,7 +6,7 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance;
     public TextMeshProUGUI scoreText;
-    static int score;
+    int score;
 
     public AudioSource hitAudio;
 
@@ -16,16 +16,16 @@ public class ScoreManager : MonoBehaviour
         score = 0;
     }
 
-    public static void Hit()
+    public void Hit()
     {
         score += 1;
-        Instance.scoreText.text = score.ToString();
-        Instance.hitAudio.Play();
+        scoreText.text = score.ToString();
+        hitAudio.Play();
     }
 
     public static void TextSongDelayInSeconds(float timeDelayInSeconds)
     {
         if (timeDelayInSeconds <= 0) timeDelayInSeconds = 0;
-        Instance.scoreText.text = Math.Round(timeDelayInSeconds, 2).ToString();
+        Instance.scoreText.text = Math.Round(timeDelayInSeconds, 1).ToString();
     }
 }

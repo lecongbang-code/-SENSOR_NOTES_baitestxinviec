@@ -27,8 +27,8 @@ public class Lane : MonoBehaviour
         if (spawnIndex < timeStamps.Count)
         {
             float laneZ = (float)timeStamps[spawnIndex] * SongManager.velocityNote;
-            GameObject g = Instantiate(notePrefab, new Vector3(transform.position.x, transform.position.y, laneZ), Quaternion.identity);
-            g.transform.SetParent(transform);
+            GameObject note = Instantiate(notePrefab, new Vector3(transform.position.x, transform.position.y, laneZ), Quaternion.identity);
+            note.transform.SetParent(transform);
             spawnIndex++;
         }
     }
